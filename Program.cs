@@ -18,6 +18,10 @@ struct SamplePacked { public int B; public short D; public byte A; public byte C
 
 class Node { public int Value; }
 
+// A class (reference type) as a field of a struct (value type).
+class Customer { public string Name { get; set; } = ""; }
+struct Order { public int Id; public Customer Customer; }
+
 struct EmptyStruct { }
 class EmptyClass { }
 
@@ -51,21 +55,31 @@ static class Program
         Console.WriteLine($"ReferenceEquals(c1, c2):  {ReferenceEquals(c1, c2)}   // False - different objects");
         Console.WriteLine($"ReferenceEquals(c1, c1):  {ReferenceEquals(c1, c1)}   // True  - same object");
 
-        Section("4. Boxing: a value type wrapped as a reference type");
+        Section("4. A struct that holds a reference (shallow copy)");
+        var original = new Order { Id = 1, Customer = new Customer { Name = "Carlos" } };
+        var copy = original;            // copies the whole struct
+        copy.Id = 99;                   // Id is independent
+        copy.Customer.Name = "Ana";     // Customer is shared
+        Console.WriteLine($"original.Id:              {original.Id}   // 1  - the int was copied");
+        Console.WriteLine($"original.Customer.Name:   {original.Customer.Name} // Ana - the Customer is shared");
+
+        Section("5. Boxing: a value type wrapped as a reference type");
         int i = 42;
-        object boxed = i;              // allocates a heap object
+        object boxed = i;               // allocates a heap object
         int unboxed = (int)boxed;
         Console.WriteLine($"boxed.GetType().Name:     {boxed.GetType().Name}");
         Console.WriteLine($"unboxed == i:             {unboxed == i}");
 
-        Section("5. Memory layout");
+        Section("6. Memory layout");
         TypeLayout.PrintLayout<Sample>();
         Console.WriteLine();
         TypeLayout.PrintLayout<SamplePacked>();
         Console.WriteLine();
         TypeLayout.PrintLayout<Node>();
+        Console.WriteLine();
+        TypeLayout.PrintLayout<Order>();
 
-        Section("6. Size floor: empty struct vs empty class");
+        Section("7. Size floor: empty struct vs empty class");
         Console.WriteLine($"Unsafe.SizeOf<EmptyStruct>(): {Unsafe.SizeOf<EmptyStruct>()} byte");
         Console.WriteLine();
         TypeLayout.PrintLayout<EmptyClass>();
