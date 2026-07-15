@@ -2,7 +2,7 @@
 
 Runnable companion code for the post **"Value vs reference types: it's not about the stack"**.
 
-- 🇬🇧 English — https://www.marilioalmeida.com/blog/value-vs-reference-types/
+- 🇺🇸 English — https://www.marilioalmeida.com/blog/value-vs-reference-types/
 - 🇧🇷 Português — https://www.marilioalmeida.com/pt/blog/tipos-por-valor-vs-por-referencia/
 
 ## What it shows
